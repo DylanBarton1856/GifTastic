@@ -1,41 +1,55 @@
+//topics array
 topics = ['zelda', 'yoshi', 'falco lombardi', 'samus', 'donkey kong'];
 var topicsArr = (topics.join());
-
-console.log (topicsArr)
-for (i=0; i<topicsArr.length; i++);{
-    var btn = $("<button>");
-    btn.text(topicsArr[i]);
-    $("#buttons").append(btn);
-// buttons.prepend("dog food" +topicsArr[i])
 console.log(topicsArr)
 
+
+//for loop for array buttons
+for (var i = 0; i < topics.length; i++) {
+  var button = $('<button>' + topics[i] + '</button>')
+  //append buttons
+  $('#buttons').append(button);
 }
-$("button").on("click", function() {
-    var person = $(this).attr("data-person");
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-      person + "&api_key=dc6zaTOxFJmzC&limit=10";
 
-    $.ajax({
-      url: queryURL,
-      method: "GET"
-    })
-      .then(function(response) {
-        var results = response.data;
+//button onclick
+$("button").on("click", function () {
+  var person = $(this).attr("data-person");
+  console.log(this);
+  console.log(person);
+  var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+    person + "&api_key=dc6zaTOxFJmzC&limit=10";
+  //ajax GET
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+  })
 
-        for (var i = 0; i < results.length; i++) {
-          var gifDiv = $("<div>");
+    //response
+    .then(function (response) {
+      console.log(response);
+      var results = response.data;
 
-          var rating = results[i].rating;
+      //for loop for rating and prepending GIFS
+      for (var i = 0; i < results.length; i++) {
+        var gifDiv = $("<div>");
 
-          var p = $("<p>").text("Rating: " + rating);
+        var rating = results[i].rating;
 
-          var personImage = $("<img>");
-          personImage.attr("src", results[i].images.fixed_height.url);
+        var p = $("<p>").text("Rating: " + rating);
 
-          gifDiv.prepend(p);
-          gifDiv.prepend(personImage);
+        var personImage = $("<img>");
+        personImage.attr("src", results[i].images.fixed_height.url);
 
-          $("#gifs-appear-here").prepend(gifDiv);
-        }
-      });
-  });
+        gifDiv.prepend(p, personImage);
+        $("#gifs-zone").prepend(gifDiv);
+      }
+
+    });
+
+    //pause and play GIFS!
+
+
+    // ADD A FORM!
+
+    
+});
