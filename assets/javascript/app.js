@@ -1,12 +1,14 @@
 //topics array
-topics = ['zelda', 'yoshi', 'falco lombardi', 'samus', 'donkey kong'];
+topics = ['zelda', 'yoshi', 'falco+lombardi', 'samus', 'donkey+kong'];
 var topicsArr = (topics.join());
 console.log(topicsArr)
 
-
+// function buttonGen()
+// $("#buttons").empty();
 //for loop for array buttons
 for (var i = 0; i < topics.length; i++) {
-  var button = $('<button>' + topics[i] + '</button>')
+  var button = $('<button data-person=' + topics[i] + '>' + topics[i] + '</button>')
+
   //append buttons
   $('#buttons').append(button);
 }
@@ -16,8 +18,11 @@ $("button").on("click", function () {
   var person = $(this).attr("data-person");
   console.log(this);
   console.log(person);
+
+  //giphysearch URL
   var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-    person + "&api_key=dc6zaTOxFJmzC&limit=10";
+    person + "&api_key=dc6zaTOxFJmzC&limit=10&rating=pg-13";
+
   //ajax GET
   $.ajax({
     url: queryURL,
@@ -37,8 +42,8 @@ $("button").on("click", function () {
 
         var p = $("<p>").text("Rating: " + rating);
 
-        var personImage = $("<img>");
-        personImage.attr("src", results[i].images.fixed_height.url);
+        var personImage = `<img class="gif" src="${results[i].images.fixed_height_still.url}" data-animate="${results[i].images.fixed_height.url}" data-state="still" data-still="${results[i].images.fixed_height_still.url}">`
+        // personImage.attr("src", results[i].images.fixed_height.url);
 
         gifDiv.prepend(p, personImage);
         $("#gifs-zone").prepend(gifDiv);
@@ -46,10 +51,31 @@ $("button").on("click", function () {
 
     });
 
-    //pause and play GIFS!
+  //pause and play GIFS!
+  $(document).on("click", ".gif", function (event) {
+
+    var state = $(this).attr("data-state");
+    var animate = event.currentTarget.dataset.animate
+    var still = event.currentTarget.dataset.still
 
 
-    // ADD A FORM!
+    // console.log(state);
 
-    
+
+
+    if (state === "still") {
+
+      $(this).attr("src", animate);
+      $(this).attr("data-state", "animate");
+
+    }
+    else {
+      $(this).attr("src", still);
+      $(this).attr("data-state", "still");
+
+    }
+  });
+  // ADD AN INPUT FORM!
+
+
 });
