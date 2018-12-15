@@ -75,7 +75,8 @@ $("button").on("click", function () {
 
     }
   });
-  // ADD AN INPUT FORM!
+
+  // ACCEPT USER INPUT/DISPLAY NEW BUTTONS!
 
 
 });
